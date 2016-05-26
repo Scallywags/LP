@@ -24,11 +24,15 @@ insert(nil, N, t(nil, N, nil)).
 insert(t(L, X, R), N, t(S, X, R))	:- N =< X, insert(L, N, S), !.
 insert(t(L, X, R), N, t(L, X, S))	:- insert(R, N, S).
 
-deleteOne(t(nil, N, nil), N, nil).
+deleteOne(nil, _, _)	:- fail.
 deleteOne(t(nil, N, R), N, R).
 deleteOne(t(L, N, nil), N, L).
 deleteOne(t(L, N, R), N, t(LminMax, Max, R))	:- !, max(L, Max), deleteOne(L, Max, LminMax).
-deleteOne(t(L, X, R), N, t(S, X, R) :- N < X, deleteOne(L, N, S), !.
-deleteOne(t(L, X, R), N, t(L, X, S) :- deleteOne(R, N, S).
+deleteOne(t(L, X, R), N, t(S, X, R)) :- N < X, deleteOne(L, N, S), !.
+deleteOne(t(L, X, R), N, t(L, X, S)) :- deleteOne(R, N, S).
 
-deleteAll(T, N, S).
+deleteAll(nil, _, nil).
+deleteAll(t(L, N, R), N, S)	:- deleteOne(t(L, N, R), N, NT), deleteAll(NT, N, S).
+deleteAll(t(L, X, R), N, t(NL, X, R))	:- N < X, deleteAll(L, N, NL), !.
+deleteAll(t(L, X, R), N, t(L, X, NR))	:- deleteAll(R, N, NR).
+
