@@ -28,5 +28,5 @@ deleteOne(t(nil, N, nil), N, nil).
 deleteOne(t(nil, N, R), N, R).
 deleteOne(t(L, N, nil), N, L).
 deleteOne(t(L, N, R), N, t(LminMax, Max, R))	:- max(L, Max), find(L, Max, t(LMax, Max, nil)), deleteOne(L, Max, LminMax).
-
-% TODO Fix
+deleteOne(t(L, X, R), N, S) :- N < X, deleteOne(L, N, S), !.
+deleteOne(t(L, X, R), N, S) :- deleteOne(R, N, S).
