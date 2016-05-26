@@ -1,7 +1,10 @@
-goal([  stand(tuesday,   _, _, _),
-        stand(wednesday, _, _, _),
-        stand(thursday,  _, _, _),
-        stand(friday,    _, _, _) ]).
+tour([  stand(tuesday,   P1, N1, F1),
+        stand(wednesday, P2, N2, F2),
+        stand(thursday,  P3, N3, F3),
+        stand(friday,    P4, N4, F4) ]) :-      not(P1 = P2), not(N1 = N2), not(F1 = F2),
+                                                not(P2 = P3), not(N2 = N3), not(F2 = F3),
+                                                not(P3 = P4), not(N3 = N4), not(F3 = F4),
+                                                not(P4 = P1), not(N4 = N1), not(F4 = F1).
         
 % stand(Day, Place, Name, Flavour)
 % Day:      { tuesday,      wednesday,      thursday,       friday          }
