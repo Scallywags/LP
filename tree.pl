@@ -3,10 +3,10 @@
 isTree(nil).
 isTree(t(L, _, R))	:- isTree(L), isTree(R).
 
-max(t(nil, X, nil), X).
+max(t(_, X, nil), X).
 max(t(_, _, R), Y)	:- max(R, Y).
 
-min(t(nil, X, nil), X).
+min(t(nil, X, _), X).
 min(t(L, _, _), Y)	:- min(L, Y).
 
 isSorted(nil).
@@ -31,8 +31,13 @@ deleteOne(t(L, N, R), N, t(LminMax, Max, R))	:- !, max(L, Max), deleteOne(L, Max
 deleteOne(t(L, X, R), N, t(S, X, R)) :- N < X, deleteOne(L, N, S), !.
 deleteOne(t(L, X, R), N, t(L, X, S)) :- deleteOne(R, N, S).
 
-deleteAll(nil, _, nil).
-deleteAll(t(L, N, R), N, S)	:- deleteOne(t(L, N, R), N, NT), deleteAll(NT, N, S).
-deleteAll(t(L, X, R), N, t(NL, X, R))	:- N < X, deleteAll(L, N, NL), !.
-deleteAll(t(L, X, R), N, t(L, X, NR))	:- deleteAll(R, N, NR).
+deleteAll(T, N, NT)	:- find(T, N, _), !, deleteOne(T, N, TT), deleteAll(TT, N, NT).
+deleteAll(T, _, T)	:- !.
 
+% 2
+
+listTree([], nil).
+listTree([H|Tail], Tree)	:- listTree(Tail, TreeRec), insert(TreeRec, H, Tree).
+
+treeList(nil, []).
+treeList(t(L, X, R), [H|Tail])	:- min(t(L, X, R), H), deleteAll(t(L, X, R), H, Tree), treeList(Tree, Tail).
