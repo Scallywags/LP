@@ -41,3 +41,6 @@ listTree([H|Tail], Tree)	:- listTree(Tail, TreeRec), insert(TreeRec, H, Tree).
 
 treeList(nil, []).
 treeList(t(L, X, R), [H|Tail])	:- min(t(L, X, R), H), deleteAll(t(L, X, R), H, Tree), treeList(Tree, Tail).
+
+treeSort(L1, L2)	:- listTree(L1, T), treeList(T, L2). % Duplicates get removed.
+
