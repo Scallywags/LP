@@ -1,5 +1,7 @@
 /*
 
+LP Project Jeroen Weener, Jan Boerman
+
 1. Sally’s Ice Cream wasn’t in Rockland. Sherry didn’t get peppermint stick
 ice cream on Thursday night.
 
@@ -18,9 +20,29 @@ Ice Cream.
 
 */
 
-% stand(day, place, name, flavour)
+% stand(day, place, owner, flavour)
 
-go(X)	:-	length(X, 4),
+go(X)	:-	X=[stand(tuesday, _, _, _), stand(wednesday, _, _, _), stand(thursday, _, _, _), stand(friday, _, _, _)],
+
+			member(stand(tuesday, _, _, _), X),
+			member(stand(wednesday, _, _, _), X),
+			member(stand(thursday, _, _, _), X),
+			member(stand(friday, _, _, _), X),
+
+			member(stand(_, rockland, _, _), X),
+			member(stand(_, granite, _, _), X),
+			member(stand(_, marsh, _, _), X),
+			member(stand(_, boulder, _, _), X),
+
+			member(stand(_, _, tom, _), X),
+			member(stand(_, _, sally, _), X),
+			member(stand(_, _, alice, _), X),
+			member(stand(_, _, gary, _), X),
+
+			member(stand(_, _, _, peanutbutter), X),
+			member(stand(_, _, _, peppermint), X),
+			member(stand(_, _, _, chocolatechip), X),
+			member(stand(_, _, _, coffeebean), X),
 
 			member(stand(_, _, tom, peanutbutter), X),				%3
 		
@@ -35,15 +57,15 @@ go(X)	:-	length(X, 4),
 			member(ChocolateChipStand, X),
 			ChocolateChipStand = stand(_, _, _, chocolatechip),
 
-			before(GaryStand, GraniteStand),						%2
-			before(GraniteStand, ChocolateChipStand),				%2
+			beforeStand(GaryStand, GraniteStand),					%2
+			beforeStand(GraniteStand, ChocolateChipStand),			%2
 
 			member(MarshStand, X),
 			MarshStand = stand(_, marsh, _, _),
 			member(SallyStand, X),
 			SallyStand = stand(_, _, sally, _),
 
-			before(MarshStand, SallyStand),							%5
+			beforeStand(MarshStand, SallyStand),					%5
 
 			not(member(stand(wednesday, _, alice, coffeebean), X)),	%4
 			not(member(stand(tuesday, _, tom, peanutbutter), X)),	%3
@@ -51,7 +73,7 @@ go(X)	:-	length(X, 4),
 			not(member(stand(thursday, _, _, peppermint), X)).		%1
 
 
-before(stand(A, _, _, _), stand(B, _, _, _))	:- before(A, B).
+beforeStand(stand(A, _, _, _), stand(B, _, _, _))	:- before(A, B).
 
 before(tuesday, wednesday).
 before(wednesday, thursday).
